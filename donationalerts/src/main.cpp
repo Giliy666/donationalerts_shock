@@ -87,9 +87,12 @@ void request()
         Serial.print("HTTP Response code: ");
         Serial.println(httpResponseCode);
         String payload = http.getString();
+        Serial.println(" ");
+        Serial.println("------donationalerts------");
         DonationNumberNow=donatsMessage(payload);
         AmountNow=amountMessage(payload);
         NameNow=usernameMessage(payload);
+        Serial.println("------donationalerts------");
       }
       else 
       {
@@ -104,7 +107,7 @@ void request()
       Serial.println("WiFi Disconnected");
     }
       Serial.println(" ");
-      delay(1000);  
+      delay(100);  
 }
 
 
@@ -113,8 +116,10 @@ void setup()
   Serial.begin(115200); 
 
   WiFi.begin(ssid, password);
+
   Serial.println(" ");
   Serial.println("Connecting");
+
   while(WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
@@ -146,19 +151,17 @@ void loop()
     if(DonationNumberNow!=DonationNumberStart)
     {
       DonationNumberStart=DonationNumberNow;
-      AmountStart=AmountNow;
-      NameStart=NameNow;
+      if (AmountNow>500)
+      {
+        a=!a;
+        digitalWrite(LED,a);
+        delay(500);
+        a=!a;
+        digitalWrite(LED,a);
+      }         
       
-      a=!a;
-      digitalWrite(LED,a);
 
-      Serial.println("");
-      Serial.println(DonationNumberStart);
-      Serial.println(AmountStart);
-      Serial.println(NameStart);
-      Serial.println("");
     }
-
       
   }
     
